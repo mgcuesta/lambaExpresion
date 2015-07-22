@@ -47,14 +47,13 @@ public class Lesson1 {
   private void exercise1() {
     List<String> list = Arrays.asList(
         "alpha", "bravo", "charlie", "delta", "echo", "foxtrot");
-      final String[] result;
-      result = new String[]{""};
+      final StringBuilder result = new StringBuilder();
       list.forEach(c ->{
-    System.out.println(c.charAt(0));
-    result[0] +=c.charAt(0);
+    //System.out.println(c.charAt(0));
+    result.append(c.charAt(0));
         }
 );
-      System.out.println("RESULTADO: "+ result[0]);
+      System.out.println("RESULTADO: "+ result);
 
       //Stream<Character> lista = list.stream().map(c -> c.charAt(0));
   }
@@ -68,8 +67,9 @@ public class Lesson1 {
     List<String> list = new ArrayList<>(Arrays.asList(
         "alpha", "bravo", "charlie", "delta", "echo", "foxtrot"));
 
-    /* YOUR CODE HERE */
-  }
+      list.removeIf(s-> s.length()%2!=0);
+
+      list.forEach(System.out::println);  }
 
   /**
    * Exercise 3
