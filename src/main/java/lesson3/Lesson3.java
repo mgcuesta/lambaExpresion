@@ -6,6 +6,7 @@
 package lesson3;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -74,10 +75,10 @@ public class Lesson3 {
 
       if(parallel)
     {
-        IntStream.range(0, LIST_SIZE - 1).parallel().forEach(id->distances[id]=IntStream.range(0, LIST_SIZE - 1).parallel().map(id2->Levenshtein.lev(wordList.get(id),wordList.get(id2))).toArray());
+        IntStream.range(0, LIST_SIZE - 1).parallel().forEach(id -> distances[id] = IntStream.range(0, LIST_SIZE - 1).parallel().map(id2 -> Levenshtein.lev(wordList.get(id), wordList.get(id2))).toArray());
     }
     else{
-          IntStream.range(0, LIST_SIZE - 1).forEach(id->distances[id]=IntStream.range(0, LIST_SIZE - 1).map(id2->Levenshtein.lev(wordList.get(id),wordList.get(id2))).toArray());
+          IntStream.range(0, LIST_SIZE - 1).forEach(id -> distances[id] = IntStream.range(0, LIST_SIZE - 1).map(id2 -> Levenshtein.lev(wordList.get(id), wordList.get(id2))).toArray());
 
       }
     
@@ -92,10 +93,15 @@ public class Lesson3 {
    * @return The list processed in whatever way you want
    */
   static List<String> processWords(List<String> wordList, boolean parallel) {
-    // YOUR CODE HERE
-    
-    return null;
-  }
+      if(parallel){
+          return wordList.parallelStream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+
+      }
+      else{
+          return wordList.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+
+      }
+      }
 
   /**
    * Main entry point for application
@@ -105,12 +111,11 @@ public class Lesson3 {
    */
   public static void main(String[] args) throws IOException {
     RandomWords fullWordList = new RandomWords();
-    List<String> wordList = fullWordList.createList(3000);
+    List<String> wordList = fullWordList.createList(500000);
 
-    measure("Sequential", () -> computeLevenshtein(wordList, false));
-    measure("Parallel", () -> computeLevenshtein(wordList, true));
-    
-//    measure("Sequential", () -> processWords(wordList, false));
-//    measure("Parallel", () -> processWords(wordList, true));
+    //measure("Sequential", () -> computeLevenshtein(wordList, false));
+    //measure("Parallel", () -> computeLevenshtein(wordList, true));
+    measure("Sequential", () -> processWords(wordList, false));
+    measure("Parallel", () -> processWords(wordList, true));
   }
 }
