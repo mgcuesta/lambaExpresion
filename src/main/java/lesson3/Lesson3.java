@@ -101,7 +101,10 @@ public class Lesson3 {
       else{
           stringStream = wordList.stream();
       }
-      return stringStream.map(String::toLowerCase).collect(Collectors.toList());
+      //return  stringStream.sorted().collect(Collectors.toList()); //PARALELO MAS EFICIENTE A PARTIR DE 50000
+      //return stringStream.map(String::toLowerCase).collect(Collectors.toList());// PARALELO MAS EFICIENTE A PARTIR DE 10000
+      //return stringStream.distinct().collect(Collectors.toList());// EN PARALELO SIEMPRE MAS COSTOSO
+      return stringStream.filter(p->p.length() > 4).collect(Collectors.toList()); // EN PARALELO MAS EFICIENTE A PARTIR DE 50000
 
   }
 
@@ -113,7 +116,7 @@ public class Lesson3 {
    */
   public static void main(String[] args) throws IOException {
     RandomWords fullWordList = new RandomWords();
-    List<String> wordList = fullWordList.createList(5000);
+    List<String> wordList = fullWordList.createList(50000);
 
     //measure("Sequential", () -> computeLevenshtein(wordList, false));
     //measure("Parallel", () -> computeLevenshtein(wordList, true));
