@@ -104,7 +104,7 @@ public class Lesson3 {
       //return  stringStream.sorted().collect(Collectors.toList()); //PARALELO MAS EFICIENTE A PARTIR DE 50000
       //return stringStream.map(String::toLowerCase).collect(Collectors.toList());// PARALELO MAS EFICIENTE A PARTIR DE 10000
       //return stringStream.distinct().collect(Collectors.toList());// EN PARALELO SIEMPRE MAS COSTOSO
-      return stringStream.filter(p->p.length() > 4).collect(Collectors.toList()); // EN PARALELO MAS EFICIENTE A PARTIR DE 50000
+      return stringStream.for.filter(p->p.length() > 4).collect(Collectors.gr.toS.toList()); // EN PARALELO MAS EFICIENTE A PARTIR DE 50000
 
   }
 
