@@ -93,15 +93,17 @@ public class Lesson3 {
    * @return The list processed in whatever way you want
    */
   static List<String> processWords(List<String> wordList, boolean parallel) {
-      if(parallel){
-          return wordList.parallelStream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
+      Stream<String> stringStream;
+      if(parallel){
+          stringStream = wordList.parallelStream();
       }
       else{
-          return wordList.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+          stringStream = wordList.stream();
+      }
+      return stringStream.map(String::toLowerCase).collect(Collectors.toList());
 
-      }
-      }
+  }
 
   /**
    * Main entry point for application
@@ -111,7 +113,7 @@ public class Lesson3 {
    */
   public static void main(String[] args) throws IOException {
     RandomWords fullWordList = new RandomWords();
-    List<String> wordList = fullWordList.createList(500000);
+    List<String> wordList = fullWordList.createList(5000);
 
     //measure("Sequential", () -> computeLevenshtein(wordList, false));
     //measure("Parallel", () -> computeLevenshtein(wordList, true));
