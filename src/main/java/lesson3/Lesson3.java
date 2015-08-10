@@ -8,6 +8,7 @@ package lesson3;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -69,8 +70,16 @@ public class Lesson3 {
   static int[][] computeLevenshtein(List<String> wordList, boolean parallel) {
     final int LIST_SIZE = wordList.size();
     int[][] distances = new int[LIST_SIZE][LIST_SIZE];
-    
-    // YOUR CODE HERE
+      Object[] distanciaObject;
+
+      if(parallel)
+    {
+        IntStream.range(0, LIST_SIZE - 1).parallel().forEach(id->distances[id]=IntStream.range(0, LIST_SIZE - 1).parallel().map(id2->Levenshtein.lev(wordList.get(id),wordList.get(id2))).toArray());
+    }
+    else{
+          IntStream.range(0, LIST_SIZE - 1).forEach(id->distances[id]=IntStream.range(0, LIST_SIZE - 1).map(id2->Levenshtein.lev(wordList.get(id),wordList.get(id2))).toArray());
+
+      }
     
     return distances;
   }
@@ -96,7 +105,7 @@ public class Lesson3 {
    */
   public static void main(String[] args) throws IOException {
     RandomWords fullWordList = new RandomWords();
-    List<String> wordList = fullWordList.createList(1000);
+    List<String> wordList = fullWordList.createList(3000);
 
     measure("Sequential", () -> computeLevenshtein(wordList, false));
     measure("Parallel", () -> computeLevenshtein(wordList, true));
